@@ -37,6 +37,13 @@ dev = [
     "ruff>=0.16.1",
 ]
 
+tests = [
+    "pytest>=9.1.1",
+]
+
+[tool.uv]
+default-groups = ["dev", "tests"]
+
 # =============
 # Project Links
 # =============
@@ -122,3 +129,18 @@ preset = "strict"
 
 [tool.pyrefly.errors]
 redundant-cast = "warn"
+
+# ===============
+# Pytest Settings
+# ===============
+[tool.pytest]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+addopts = [
+    # "--showlocals",                       # Show local variables for failed tests
+    "-r a",                                 # Summary for tests at the end
+    "--strict-markers",                     # Raise errors for misused markers
+    "--import-mode=importlib",              # Rich import mode avoiding name conflicts
+    "--color=yes",
+]
