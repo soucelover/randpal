@@ -32,6 +32,8 @@ dependencies = []
 
 [dependency-groups]
 dev = [
+    "pyrefly>=1.2.0",
+    "pyright>=1.1.411",
     "ruff>=0.16.1",
 ]
 
@@ -99,3 +101,24 @@ runtime-evaluated-base-classes = [
     "pydantic_settings.BaseSettings",
 ]
 runtime-evaluated-decorators = ["invoke.tasks.task"]
+
+# ================
+# Pyright Settings
+# ================
+[tool.pyright]
+typeCheckingMode = "strict"
+
+reportUnusedImport = "warning"
+reportUnusedClass = "warning"
+reportUnusedFunction = "warning"
+reportUnusedVariable = "warning"
+reportUnnecessaryCast = "warning"
+
+# ================
+# Pyrefly Settings
+# ================
+[tool.pyrefly]
+preset = "strict"
+
+[tool.pyrefly.errors]
+redundant-cast = "warn"
