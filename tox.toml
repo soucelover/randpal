@@ -1,0 +1,20 @@
+env_list = ["3.10", "3.11", "3.12", "3.13", "3.14", "lint"]
+
+[env_run_base]
+runner = "uv-venv-lock-runner"
+description = "Run the test suite with pytest"
+dependency_groups = ["dev", "tests"]
+commands = [
+    ["pytest"],
+    ["pyright"],
+    ["pyrefly", "check"]
+]
+
+[env.lint]
+runner = "uv-venv-lock-runner"
+description = "Run linters"
+dependency_groups = ["dev"]
+commands = [
+    ["ruff", "check"],
+    ["ruff", "format", "--check"]
+]
