@@ -25,10 +25,24 @@ license-files = ["LICENSE"]
 dynamic = ["version"]
 
 # ===================
-# Requirements (deps)
+# Requirements (Deps)
 # ===================
 requires-python = ">=3.14"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.1",
+]
+
+# =============
+# Project Links
+# =============
+# TIP: Fill in the project links
+[project.urls]
+Repository = "https://github.com/soucelover/randpal.git"
+Issues = "https://github.com/soucelover/randpal/issues"
+Changelog = "https://github.com/soucelover/randpal/releases"
 
 # ============
 # Build System
@@ -42,3 +56,46 @@ build-backend = "hatchling.build"
 
 [tool.hatch.version]
 source = "vcs"
+
+# =============
+# Ruff Settings
+# =============
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules
+select = ["ALL"]
+ignore = [
+    "D",      # TIP: Uncomment if you intend to write documentation from the start
+    "ARG",    # flake8-unused-arguments (sometimes useful for refactoring)
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "TD003",  # Inserting Link issues
+    "FIX",    # Consider resolving issue -- usually very annoying
+    "COM812", # Redundant with formatter
+    "CPY001", # Missing license notices
+]
+extend-safe-fixes = ["TC", "PYI021"]
+future-annotations = true
+
+[tool.ruff.lint.per-file-ignores]
+"!src/**" = ["D", "SLF"]
+"tests/**/*" = ["S101", "INP001", "PLR2004"]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = [
+    "pydantic.BaseModel",
+    "pydantic_settings.BaseSettings",
+]
+runtime-evaluated-decorators = ["invoke.tasks.task"]
