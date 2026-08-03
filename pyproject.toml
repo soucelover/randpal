@@ -1,10 +1,27 @@
 [project]
 name = "randpal"
-description = "Convenient CLI wrapper around Python random module."
+
+description = "Your friendly random pal - at your random service."
 readme = "README.md"
+
 authors = [
     { name = "Soucelover", email = "mr.ktotov@gmail.com" }
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+    "Environment :: Console",
+]
+keywords = ["random", "cli", "generator", "dice"]
+
+license = "MIT"
+license-files = ["LICENSE"]
+
 dynamic = ["version"]
 
 # ===================
