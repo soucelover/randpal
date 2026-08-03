@@ -1,17 +1,60 @@
 [project]
 name = "randpal"
-description = "Convenient CLI wrapper around Python random module."
+
+description = "Your friendly random pal - at your random service."
 readme = "README.md"
+
 authors = [
     { name = "Soucelover", email = "mr.ktotov@gmail.com" }
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+    "Environment :: Console",
+]
+keywords = ["random", "cli", "generator", "dice"]
+
+license = "MIT"
+license-files = ["LICENSE"]
+
 dynamic = ["version"]
 
 # ===================
-# Requirements (deps)
+# Requirements (Deps)
 # ===================
-requires-python = ">=3.14"
+requires-python = ">=3.10,<4.0"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.1",
+    "pyrefly>=1.2.0",
+    "pyright>=1.1.411",
+    "ruff>=0.16.1",
+]
+
+tests = [
+    "pytest>=9.1.1",
+    "tox>=4.58.0",
+    "tox-uv>=1.36.0",
+]
+
+[tool.uv]
+default-groups = ["dev", "tests"]
+
+# =============
+# Project Links
+# =============
+# TIP: Fill in the project links
+[project.urls]
+Repository = "https://github.com/soucelover/randpal.git"
+Issues = "https://github.com/soucelover/randpal/issues"
+Changelog = "https://github.com/soucelover/randpal/releases"
 
 # ============
 # Build System
@@ -25,3 +68,82 @@ build-backend = "hatchling.build"
 
 [tool.hatch.version]
 source = "vcs"
+
+# =============
+# Ruff Settings
+# =============
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules
+select = ["ALL"]
+ignore = [
+    "D",      # TIP: Uncomment if you intend to write documentation from the start
+    "ARG",    # flake8-unused-arguments (sometimes useful for refactoring)
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "TD003",  # Inserting Link issues
+    "FIX",    # Consider resolving issue -- usually very annoying
+    "COM812", # Redundant with formatter
+    "CPY001", # Missing license notices
+]
+extend-safe-fixes = ["TC", "PYI021"]
+future-annotations = true
+
+[tool.ruff.lint.per-file-ignores]
+"!src/**" = ["D", "SLF"]
+"tests/**/*" = ["S101", "INP001", "PLR2004"]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = [
+    "pydantic.BaseModel",
+    "pydantic_settings.BaseSettings",
+]
+runtime-evaluated-decorators = ["invoke.tasks.task"]
+
+# ================
+# Pyright Settings
+# ================
+[tool.pyright]
+typeCheckingMode = "strict"
+
+reportUnusedImport = "warning"
+reportUnusedClass = "warning"
+reportUnusedFunction = "warning"
+reportUnusedVariable = "warning"
+reportUnnecessaryCast = "warning"
+
+# ================
+# Pyrefly Settings
+# ================
+[tool.pyrefly]
+preset = "strict"
+
+[tool.pyrefly.errors]
+redundant-cast = "warn"
+
+# ===============
+# Pytest Settings
+# ===============
+[tool.pytest]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+addopts = [
+    # "--showlocals",                       # Show local variables for failed tests
+    "-r a",                                 # Summary for tests at the end
+    "--strict-markers",                     # Raise errors for misused markers
+    "--import-mode=importlib",              # Rich import mode avoiding name conflicts
+    "--color=yes",
+]

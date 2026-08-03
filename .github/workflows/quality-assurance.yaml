@@ -1,0 +1,107 @@
+name: Run quality assurance checks
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+  push:
+    branches:
+      - master
+
+  workflow_call:
+
+jobs:
+  lint-and-format:
+    name: Lint and check formatting
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check formatting
+        uses: astral-sh/ruff-action@v4.1.0
+        with:
+          version-file: uv.lock
+          args: format --check --diff
+
+      - name: Check linting
+        run: |
+          ruff check --output-format=github
+
+  type-checking:
+    name: Static type checking
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.draft == false
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          enable-cache: true
+
+      - name: Synchronise dependencies
+        run: |
+          uv sync --locked --all-extras --all-groups --dev
+
+      - name: Check with Pyright
+        uses: jakebailey/pyright-action@v2
+        with:
+          version: latest
+          annotate: all
+
+  runtime-tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.draft == false
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          enable-cache: true
+
+      - name: Synchronise dependencies
+        run: |
+          uv sync --locked --all-extras --no-dev --group tests
+
+      - name: Run Pytest
+        run: |
+            pytest --doctest-modules
