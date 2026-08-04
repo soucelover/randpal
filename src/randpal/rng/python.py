@@ -4,10 +4,10 @@ import random
 
 from typing_extensions import override
 
-from . import RandomProvider
+from .base import IntegerGenerator, RandomProvider
 
 
-class PythonRandom(RandomProvider):
+class PythonRandom(IntegerGenerator, RandomProvider):
     _generator: random.Random
 
     def __init__(self, generator: random.Random | None = None) -> None:

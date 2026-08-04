@@ -4,10 +4,10 @@ import secrets
 
 from typing_extensions import override
 
-from . import RandomProvider
+from .base import IntegerGenerator, RandomProvider
 
 
-class SecretsRandom(RandomProvider):
+class SecretsRandom(IntegerGenerator, RandomProvider):
     _generator: secrets.SystemRandom
 
     def __init__(self, generator: secrets.SystemRandom | None = None) -> None:
