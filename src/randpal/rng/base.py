@@ -7,6 +7,14 @@ from typing import TYPE_CHECKING, Protocol, SupportsIndex, TypeVar, overload
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+__all__ = [
+    "FloatGenerator",
+    "IntegerGenerator",
+    "RandomProvider",
+    "SequencesGenerator",
+]
+
+
 _T = TypeVar("_T")
 
 
@@ -129,6 +137,6 @@ class FloatGenerator(Protocol):
         raise NotImplementedError
 
 
-class SequencesGenerator(Protocol):
+class SequencesGenerator(RandomProvider, Protocol):
     def choice(self, seq: Sequence[_T]) -> _T:
-        raise NotImplementedError
+        return seq[self._randbelow(len(seq))]
