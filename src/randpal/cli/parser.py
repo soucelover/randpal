@@ -11,7 +11,8 @@ from collections.abc import Callable, Sequence
 from typing import TypeAlias
 
 import randpal
-from randpal.__main__ import command_choose, command_int
+
+from .commands import command_choose, command_int
 
 CommandFunction: TypeAlias = Callable[[Namespace], None]
 
