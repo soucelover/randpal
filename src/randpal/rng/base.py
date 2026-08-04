@@ -36,7 +36,7 @@ class RandomProvider(Protocol):
         return r
 
 
-class IntegerGenerator(Protocol, RandomProvider):
+class IntegerGenerator(RandomProvider, Protocol):
     @overload
     def randrange(self, stop: SupportsIndex, /) -> int: ...
     @overload
