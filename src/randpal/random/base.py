@@ -14,6 +14,11 @@ class RandomProvider(Protocol):
     def randbytes(self, n: int) -> bytes:
         raise NotImplementedError
 
+    def randbits(self, k: int) -> int:
+        n = (k + 7) // 8
+        value = int.from_bytes(self.randbytes(n), "big")
+        return value >> (n * 8 - k)
+
 
 class IntegerGenerator(Protocol):
     @overload
