@@ -3,18 +3,20 @@ from __future__ import annotations
 import inspect
 from argparse import (
     ArgumentParser,
-    Namespace,
     RawDescriptionHelpFormatter,
     _SubParsersAction,
 )
-from collections.abc import Callable, Sequence
-from typing import TypeAlias
+from typing import TYPE_CHECKING
 
 import randpal
 
+from .base import GeneratorCommandArgs, RandomGeneratorFactory
 from .commands import command_choose, command_int
 
-CommandFunction: TypeAlias = Callable[[Namespace], None]
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from .base import CommandFunction, GeneratorCommandFunction
 
 
 def get_docs_header(obj: object) -> tuple[str, str] | tuple[None, None]:
@@ -69,6 +71,39 @@ def add_command(  # noqa: PLR0913
         formatter_class=RawDescriptionHelpFormatter,
     )
     parser.set_defaults(command=function)
+    return parser
+
+
+def add_generator_command(  # noqa: PLR0913
+    commands: _SubParsersAction[ArgumentParser],
+    name: str,
+    function: GeneratorCommandFunction,
+    providers: Sequence[str] = ("python", "secrets"),
+    *,
+    help: str | None = None,
+    epilog: str | None = None,
+    aliases: Sequence[str] = (),
+) -> ArgumentParser:
+    def wrapper(args: GeneratorCommandArgs) -> None:
+        factory = RandomGeneratorFactory()
+
+        return function(args, factory)
+
+    parser = add_command(
+        commands,
+        name,
+        wrapper,  # pyrefly: ignore [bad-argument-type]
+        help=help,
+        epilog=epilog,
+        aliases=aliases,
+    )
+    parser.add_argument(
+        "--provider",
+        default=providers[0],
+        choices=providers,
+        help="Provider chosen as a source of entropy for random generation.",
+    )
+
     return parser
 
 
