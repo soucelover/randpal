@@ -23,7 +23,7 @@ def command_int(
     print(number, end="\n\n")  # noqa: T201
 
 
-def command_choose(
+def command_pick(
     args: GeneratorCommandArgs, factory: RandomGeneratorFactory
 ) -> None:
     generator: SequencesGenerator = factory.create_rng(args.provider)

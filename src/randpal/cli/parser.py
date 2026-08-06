@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 import randpal
 
 from .base import GeneratorCommandArgs, RandomGeneratorFactory
-from .commands import command_choose, command_int
+from .commands import command_int, command_pick
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -114,7 +114,7 @@ def register_commands(parser: ArgumentParser) -> None:
     com_int.add_argument("a", type=int)
     com_int.add_argument("b", type=int)
 
-    com_choose = add_generator_command(commands, "choose", command_choose)
+    com_choose = add_generator_command(commands, "pick", command_pick)
     com_choose.add_argument("items", nargs="+", metavar="item")
 
 
