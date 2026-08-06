@@ -110,12 +110,12 @@ def add_generator_command(  # noqa: PLR0913
 def register_commands(parser: ArgumentParser) -> None:
     commands = parser.add_subparsers(required=True)
 
-    com_int = add_command(commands, "int", command_int)
+    com_int = add_generator_command(commands, "int", command_int)
     com_int.add_argument("a", type=int)
     com_int.add_argument("b", type=int)
 
-    com_choose = add_command(commands, "choose", command_choose)
-    com_choose.add_argument("item", nargs="+")
+    com_choose = add_generator_command(commands, "choose", command_choose)
+    com_choose.add_argument("items", nargs="+", metavar="item")
 
 
 def setup_parser() -> ArgumentParser:
