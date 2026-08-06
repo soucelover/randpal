@@ -40,7 +40,7 @@ def add_command(  # noqa: PLR0913
     name: str,
     function: CommandFunction,
     *,
-    help: str | None = None,  # noqa: A002
+    help: str | None = None,
     epilog: str | None = None,
     aliases: Sequence[str] = (),
 ) -> ArgumentParser:
@@ -58,7 +58,7 @@ def add_command(  # noqa: PLR0913
     header, docs = get_docs_header(function)
 
     if help is None:
-        help = header  # noqa: A001
+        help = header
 
     parser = commands.add_parser(
         name,
