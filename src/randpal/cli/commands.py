@@ -22,6 +22,8 @@ def command_int(
             print(number)  # noqa: T201
         case "verbose":
             print(f"And so, the random number is... {number}!", end="\n\n")  # noqa: T201
+        case _:
+            raise NotImplementedError
 
 
 def command_pick(
@@ -39,3 +41,5 @@ def command_pick(
                 "written on it has fallen out.",
                 end="\n\n",
             )
+        case _:
+            raise NotImplementedError
