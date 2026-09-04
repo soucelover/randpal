@@ -7,7 +7,13 @@ from typing import TYPE_CHECKING
 import randpal
 
 from .base import GeneratorCommandArgs, RandomGeneratorFactory
-from .commands import command_chance, command_float, command_int, command_pick
+from .commands import (
+    command_bool,
+    command_chance,
+    command_float,
+    command_int,
+    command_pick,
+)
 
 if TYPE_CHECKING:
     from argparse import (
@@ -126,6 +132,13 @@ def register_commands(parser: ArgumentParser) -> None:
     com_int = add_generator_command(commands, "int", command_int)
     com_int.add_argument("a", type=int)
     com_int.add_argument("b", type=int)
+
+    add_generator_command(
+        commands,
+        "bool",
+        command_bool,
+        output_formats=("verbose", "concise", "exit-code"),
+    )
 
     com_int = add_generator_command(commands, "float", command_float)
     com_int.add_argument("a", type=float)
