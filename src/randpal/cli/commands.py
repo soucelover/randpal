@@ -17,10 +17,13 @@ def command_int(
     generator: IntegerGenerator = factory.create_rng(args.provider)
     number = generator.randint(args.a, args.b)
 
-    if VERBOSE_MODE:
-        print("Random number is ", end="")  # noqa: T201
-
-    print(number, end="\n\n")  # noqa: T201
+    match args.output_format:
+        case "concise":
+            print(number)  # noqa: T201
+        case "verbose":
+            print(f"And so, the random number is... {number}!", end="\n\n")  # noqa: T201
+        case _:
+            raise NotImplementedError
 
 
 def command_pick(
@@ -29,7 +32,14 @@ def command_pick(
     generator: SequencesGenerator = factory.create_rng(args.provider)
     item = generator.choice(args.items)
 
-    if VERBOSE_MODE:
-        print("Random chosen item is ", end="")  # noqa: T201
-
-    print(item, end="\n\n")  # noqa: T201
+    match args.output_format:
+        case "concise":
+            print(item)  # noqa: T201
+        case "verbose":
+            print(  # noqa: T201
+                f'The barrel with cards was shaken and a card with "{item}" '
+                "written on it has fallen out.",
+                end="\n\n",
+            )
+        case _:
+            raise NotImplementedError
