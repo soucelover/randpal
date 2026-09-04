@@ -30,4 +30,4 @@ class RandomGeneratorFactory:
 
 class GeneratorCommandArgs(Namespace):
     provider: ProviderCode
-    output_format: Literal["concise", "verbose"]
+    output_format: str
