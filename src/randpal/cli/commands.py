@@ -43,6 +43,26 @@ def command_float(
             raise NotImplementedError
 
 
+def command_bool(
+    args: GeneratorCommandArgs, factory: RandomGeneratorFactory
+) -> None:
+    generator: IntegerGenerator = factory.create_rng(args.provider)
+    result = generator.randbool()
+
+    match args.output_format:
+        case "concise":
+            print(("no", "yes")[result])  # noqa: T201
+        case "verbose":
+            if result:
+                print('The odds has said "yes"!')  # noqa: T201
+            else:
+                print("A chance word didn't turn in your favour...")  # noqa: T201
+        case "exit-code":
+            raise SystemExit(int(not result))
+        case _:
+            raise NotImplementedError
+
+
 def command_chance(
     args: GeneratorCommandArgs, factory: RandomGeneratorFactory
 ) -> None:
