@@ -8,9 +8,6 @@ if TYPE_CHECKING:
     from .base import GeneratorCommandArgs, RandomGeneratorFactory
 
 
-VERBOSE_MODE = True
-
-
 def command_int(
     args: GeneratorCommandArgs, factory: RandomGeneratorFactory
 ) -> None:
