@@ -112,6 +112,9 @@ runtime-evaluated-base-classes = [
 ]
 runtime-evaluated-decorators = ["invoke.tasks.task"]
 
+[tool.ruff.lint.flake8-builtins]
+ignorelist = ["help"]
+
 # ================
 # Pyright Settings
 # ================
