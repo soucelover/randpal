@@ -79,7 +79,7 @@ def add_generator_command(  # noqa: PLR0913
     function: GeneratorCommandFunction,
     *,
     providers: Sequence[str] | None = ("python", "secrets"),
-    output_formats: Sequence[str] | None = ("concise", "verbose"),
+    output_formats: Sequence[str] | None = ("verbose", "concise"),
     help: str | None = None,
     epilog: str | None = None,
     aliases: Sequence[str] = (),
