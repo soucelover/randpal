@@ -2,7 +2,15 @@ from __future__ import annotations
 
 import operator
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Protocol, SupportsIndex, TypeVar, overload
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+    Protocol,
+    SupportsFloat,
+    SupportsIndex,
+    TypeVar,
+    overload,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -129,12 +137,67 @@ class IntegerGenerator(RandomProvider, Protocol):
         return bool(self.randbits(1))
 
 
-class FloatGenerator(Protocol):
-    def uniform(self, a: float, b: float) -> float:
-        raise NotImplementedError
+class FloatGenerator(RandomProvider, Protocol):
+    # These constants use '53' as Python's float is implemented with binary64
+    FLOAT_SIGNIFICANT_BITS: ClassVar[int] = 53
+    FLOAT_UNIT_INTERVAL_SCALE_FACTOR: ClassVar[int] = 2**FLOAT_SIGNIFICANT_BITS
 
-    def chance(self, probability: float) -> bool:
-        raise NotImplementedError
+    def random(self) -> float:
+        """Get a random a random number from a unit interval.
+
+        Returns:
+            A floating-point value chosen from interval `[0, 1)`.
+        """
+        return (
+            self.randbits(self.FLOAT_SIGNIFICANT_BITS)
+            / self.FLOAT_UNIT_INTERVAL_SCALE_FACTOR
+        )
+
+    def uniform(self, a: SupportsFloat, b: SupportsFloat) -> float:
+        """Get a random floating-point number from the given range.
+
+        Returns:
+            A floating-point value chosen from interval `[a, b)`. There
+                is a possibility of the number rounding up to `b`.
+        """
+        try:
+            a = float(a)
+        except TypeError as exc:
+            tname = type(a).__name__
+            msg = f"Arg 1 of type {tname} couldn't be interpreted as float"
+            raise TypeError(msg) from exc
+
+        try:
+            b = float(b)
+        except TypeError as exc:
+            tname = type(b).__name__
+            msg = f"Arg 2 of type {tname} couldn't be interpreted as float"
+            raise TypeError(msg) from exc
+
+        width = b - a
+        return a + width * self.random()
+
+    def chance(self, probability: SupportsFloat) -> bool:
+        """Return `True` with the given probability.
+
+        Args:
+            probability: A floating-point probability of returning `True`.
+                Must be in a unit interval `[0, 1]`.
+
+        Returns:
+            `True` if the random event with a given probability happens,
+                and `False` otherwise.
+        """
+        probability = float(probability)
+
+        if not 0 <= probability <= 1:
+            msg = (
+                f"Probability {probability} was supplied, being outside "
+                "of the allowed interval [0, 1]"
+            )
+            raise ValueError(msg)
+
+        return self.random() < probability
 
 
 class SequencesGenerator(RandomProvider, Protocol):
