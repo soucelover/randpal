@@ -77,8 +77,8 @@ def add_generator_command(  # noqa: PLR0913
     commands: _SubParsersAction[ArgumentParser],
     name: str,
     function: GeneratorCommandFunction,
-    providers: Sequence[str] = ("python", "secrets"),
     *,
+    providers: Sequence[str] | None = ("python", "secrets"),
     help: str | None = None,
     epilog: str | None = None,
     aliases: Sequence[str] = (),
@@ -96,12 +96,15 @@ def add_generator_command(  # noqa: PLR0913
         epilog=epilog,
         aliases=aliases,
     )
-    parser.add_argument(
-        "--provider",
-        default=providers[0],
-        choices=providers,
-        help="Provider chosen as a source of entropy for random generation.",
-    )
+
+    if providers:
+        parser.add_argument(
+            "--provider",
+            default=providers[0],
+            choices=providers,
+            help="Provider chosen as a source of entropy "
+            "for random generation.",
+        )
 
     return parser
 
