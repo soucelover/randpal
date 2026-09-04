@@ -140,20 +140,20 @@ def register_commands(parser: ArgumentParser) -> None:
         output_formats=("verbose", "concise", "exit-code"),
     )
 
-    com_int = add_generator_command(commands, "float", command_float)
-    com_int.add_argument("a", type=float)
-    com_int.add_argument("b", type=float)
+    com_float = add_generator_command(commands, "float", command_float)
+    com_float.add_argument("a", type=float)
+    com_float.add_argument("b", type=float)
 
-    com_int = add_generator_command(
+    com_chance = add_generator_command(
         commands,
         "chance",
         command_chance,
         output_formats=("verbose", "concise", "exit-code"),
     )
-    com_int.add_argument("probability", type=float)
+    com_chance.add_argument("probability", type=float)
 
-    com_choose = add_generator_command(commands, "pick", command_pick)
-    com_choose.add_argument("items", nargs="+", metavar="item")
+    com_pick = add_generator_command(commands, "pick", command_pick)
+    com_pick.add_argument("items", nargs="+", metavar="item")
 
 
 def setup_parser() -> ArgumentParser:
