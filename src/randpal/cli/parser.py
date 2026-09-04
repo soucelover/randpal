@@ -1,11 +1,7 @@
 from __future__ import annotations
 
 import inspect
-from argparse import (
-    ArgumentParser,
-    RawDescriptionHelpFormatter,
-    _SubParsersAction,
-)
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from typing import TYPE_CHECKING
 
 import randpal
@@ -14,6 +10,9 @@ from .base import GeneratorCommandArgs, RandomGeneratorFactory
 from .commands import command_int, command_pick
 
 if TYPE_CHECKING:
+    from argparse import (
+        _SubParsersAction,  # pyright: ignore[reportPrivateUsage]
+    )
     from collections.abc import Sequence
 
     from .base import CommandFunction, GeneratorCommandFunction
@@ -92,7 +91,7 @@ def add_generator_command(  # noqa: PLR0913
     parser = add_command(
         commands,
         name,
-        wrapper,  # pyrefly: ignore [bad-argument-type]
+        wrapper,  # type: ignore [reportArgumentType]
         help=help,
         epilog=epilog,
         aliases=aliases,
