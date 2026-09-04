@@ -79,6 +79,7 @@ def add_generator_command(  # noqa: PLR0913
     function: GeneratorCommandFunction,
     *,
     providers: Sequence[str] | None = ("python", "secrets"),
+    output_formats: Sequence[str] | None = ("concise", "verbose"),
     help: str | None = None,
     epilog: str | None = None,
     aliases: Sequence[str] = (),
@@ -104,6 +105,16 @@ def add_generator_command(  # noqa: PLR0913
             choices=providers,
             help="Provider chosen as a source of entropy "
             "for random generation.",
+        )
+
+    if output_formats:
+        parser.add_argument(
+            "--output-format",
+            "--format",
+            default=output_formats[0],
+            choices=output_formats,
+            help="Output format for the generation results.",
+            dest="output_format",
         )
 
     return parser
