@@ -20,7 +20,7 @@ jobs:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check formatting
         uses: astral-sh/ruff-action@v4.1.0
@@ -48,27 +48,25 @@ jobs:
           - "3.14"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           activate-environment: true
-          enable-cache: true
 
       - name: Synchronise dependencies
         run: |
           uv sync --locked --all-extras --all-groups --dev
 
       - name: Check with Pyright
-        uses: jakebailey/pyright-action@v2
+        uses: jakebailey/pyright-action@v3
         with:
-          version: latest
-          annotate: all
+          version: PATH
 
   runtime-tests:
     name: Run tests
@@ -86,14 +84,14 @@ jobs:
           - "3.14"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           activate-environment: true
           enable-cache: true
