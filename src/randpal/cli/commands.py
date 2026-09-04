@@ -3,7 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from randpal.rng import IntegerGenerator, SequencesGenerator
+    from randpal.rng import (
+        FloatGenerator,
+        IntegerGenerator,
+        SequencesGenerator,
+    )
 
     from .base import GeneratorCommandArgs, RandomGeneratorFactory
 
@@ -16,6 +20,21 @@ def command_int(
 ) -> None:
     generator: IntegerGenerator = factory.create_rng(args.provider)
     number = generator.randint(args.a, args.b)
+
+    match args.output_format:
+        case "concise":
+            print(number)  # noqa: T201
+        case "verbose":
+            print(f"And so, the random integer is... {number}!", end="\n\n")  # noqa: T201
+        case _:
+            raise NotImplementedError
+
+
+def command_float(
+    args: GeneratorCommandArgs, factory: RandomGeneratorFactory
+) -> None:
+    generator: FloatGenerator = factory.create_rng(args.provider)
+    number = generator.uniform(args.a, args.b)
 
     match args.output_format:
         case "concise":
