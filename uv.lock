@@ -280,6 +280,9 @@ wheels = [
 [[package]]
 name = "randpal"
 source = { editable = "." }
+dependencies = [
+    { name = "typing-extensions" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -295,6 +298,7 @@ tests = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "typing-extensions", specifier = ">=4.16.0" }]
 
 [package.metadata.requires-dev]
 dev = [
